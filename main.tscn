@@ -1,0 +1,67 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://player.gd" id="1_player"]
+[ext_resource type="Shader" path="res://floor.gdshader" id="2_floor"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_floor"]
+shader = ExtResource("2_floor")
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor"]
+material = SubResource("ShaderMaterial_floor")
+size = Vector3(100, 1, 100)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
+size = Vector3(100, 1, 100)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_player"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky"]
+
+[sub_resource type="Sky" id="Sky_main"]
+sky_material = SubResource("ProceduralSkyMaterial_sky")
+
+[sub_resource type="Environment" id="Environment_main"]
+background_mode = 2
+sky = SubResource("Sky_main")
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_sky_contribution = 0.5
+
+[node name="Main" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_main")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 10, 0)
+shadow_enabled = true
+
+[node name="Floor" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("BoxMesh_floor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("BoxShape3D_floor")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+script = ExtResource("1_player")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
+mesh = SubResource("CapsuleMesh_player")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = SubResource("CapsuleShape3D_player")
+
+[node name="CameraPivot" type="Node3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="Player/CameraPivot"]
+spring_length = 5.0
+margin = 0.2
+
+[node name="Camera3D" type="Camera3D" parent="Player/CameraPivot/SpringArm3D"]
