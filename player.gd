@@ -4,12 +4,14 @@ extends CharacterBody3D
 const SPEED := 6.0
 const ACCELERATION := 40.0
 const JUMP_VELOCITY := 6.5
+const TURN_SPEED := 12.0 # plus grand = rotation plus rapide
 const MOUSE_SENSITIVITY := 0.003
 const PITCH_MIN := deg_to_rad(-75.0) # caméra haute, regarde vers le bas
 const PITCH_MAX := deg_to_rad(15.0)  # caméra basse
 
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
+@onready var model: Node3D = $Model # tourne seul ; la caméra n'en dépend pas
 @onready var camera_pivot: Node3D = $CameraPivot
 @onready var spring_arm: SpringArm3D = $CameraPivot/SpringArm3D
 
@@ -65,5 +67,10 @@ func _physics_process(delta: float) -> void:
 	var target := direction * SPEED
 	velocity.x = move_toward(velocity.x, target.x, ACCELERATION * delta)
 	velocity.z = move_toward(velocity.z, target.z, ACCELERATION * delta)
+
+	# Le modèle regarde vers -Z : on le tourne en douceur vers la direction du déplacement.
+	if direction.length_squared() > 0.001:
+		var target_yaw := atan2(-direction.x, -direction.z)
+		model.rotation.y = lerp_angle(model.rotation.y, target_yaw, 1.0 - exp(-TURN_SPEED * delta))
 
 	move_and_slide()

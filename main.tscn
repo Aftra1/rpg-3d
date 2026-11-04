@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://player.gd" id="1_player"]
 [ext_resource type="Shader" path="res://floor.gdshader" id="2_floor"]
@@ -14,6 +14,9 @@ size = Vector3(100, 1, 100)
 size = Vector3(100, 1, 100)
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_player"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_nose"]
+size = Vector3(0.3, 0.3, 0.3)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
 
@@ -51,8 +54,14 @@ shape = SubResource("BoxShape3D_floor")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
 script = ExtResource("1_player")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
+[node name="Model" type="Node3D" parent="Player"]
+
+[node name="Body" type="MeshInstance3D" parent="Player/Model"]
 mesh = SubResource("CapsuleMesh_player")
+
+[node name="Nose" type="MeshInstance3D" parent="Player/Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -0.5)
+mesh = SubResource("BoxMesh_nose")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
 shape = SubResource("CapsuleShape3D_player")
