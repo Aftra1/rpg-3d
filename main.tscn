@@ -9,7 +9,8 @@
 [ext_resource type="PackedScene" path="res://assets/models/roche_01.glb" id="rock1"]
 [ext_resource type="PackedScene" path="res://assets/models/roche_02.glb" id="rock2"]
 [ext_resource type="PackedScene" path="res://assets/models/roche_03.glb" id="rock3"]
-[ext_resource type="PackedScene" path="res://assets/models/heros.glb" id="hero"]
+[ext_resource type="PackedScene" path="res://assets/models/heros_v2.glb" id="hero"]
+[ext_resource type="Script" path="res://hero_animator.gd" id="hero_animator"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
 radius = 0.35
@@ -86,6 +87,11 @@ script = ExtResource("1_player")
 
 [node name="Heros" parent="Player/Model" instance=ExtResource("hero")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, -0.9, 0)
+
+[node name="AnimationTree" type="AnimationTree" parent="Player"]
+root_node = NodePath("../Model/Heros")
+anim_player = NodePath("../Model/Heros/AnimationPlayer")
+script = ExtResource("hero_animator")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
 shape = SubResource("CapsuleShape3D_player")
