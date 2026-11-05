@@ -1,10 +1,11 @@
-[gd_scene load_steps=17 format=3]
+[gd_scene load_steps=18 format=3]
 
 [ext_resource type="Script" path="res://player.gd" id="1_player"]
 [ext_resource type="PackedScene" path="res://assets/models/arbre_01.glb" id="tree1"]
 [ext_resource type="PackedScene" path="res://assets/models/arbre_02.glb" id="tree2"]
 [ext_resource type="PackedScene" path="res://assets/models/arbre_03.glb" id="tree3"]
 [ext_resource type="PackedScene" path="res://assets/models/terrain_01.glb" id="4_terrain"]
+[ext_resource type="Script" path="res://grass.gd" id="grass_script"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_player"]
 
@@ -242,3 +243,6 @@ transform = Transform3D(1.041, 0, 0, 0, 1.041, 0, 0, 0, 1.041, 0, 0, 0)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Arbre15"]
 transform = Transform3D(1.041, 0, 0, 0, 1.041, 0, 0, 0, 1.041, 0, 1.145, 0)
 shape = SubResource("CylinderShape3D_trunk2")
+
+[node name="Grass" type="Node3D" parent="."]
+script = ExtResource("grass_script")
