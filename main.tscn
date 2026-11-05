@@ -9,13 +9,11 @@
 [ext_resource type="PackedScene" path="res://assets/models/roche_01.glb" id="rock1"]
 [ext_resource type="PackedScene" path="res://assets/models/roche_02.glb" id="rock2"]
 [ext_resource type="PackedScene" path="res://assets/models/roche_03.glb" id="rock3"]
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_player"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_nose"]
-size = Vector3(0.3, 0.3, 0.3)
+[ext_resource type="PackedScene" path="res://assets/models/heros.glb" id="hero"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
+radius = 0.35
+height = 1.8
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_rock2"]
 height = 0.85
@@ -81,26 +79,22 @@ shadow_enabled = true
 [node name="Terrain" parent="." instance=ExtResource("4_terrain")]
 
 [node name="Player" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0)
 script = ExtResource("1_player")
 
 [node name="Model" type="Node3D" parent="Player"]
 
-[node name="Body" type="MeshInstance3D" parent="Player/Model"]
-mesh = SubResource("CapsuleMesh_player")
-
-[node name="Nose" type="MeshInstance3D" parent="Player/Model"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -0.5)
-mesh = SubResource("BoxMesh_nose")
+[node name="Heros" parent="Player/Model" instance=ExtResource("hero")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, -0.9, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
 shape = SubResource("CapsuleShape3D_player")
 
 [node name="CameraPivot" type="Node3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
 
 [node name="SpringArm3D" type="SpringArm3D" parent="Player/CameraPivot"]
-spring_length = 5.0
+spring_length = 4.0
 margin = 0.2
 
 [node name="Camera3D" type="Camera3D" parent="Player/CameraPivot/SpringArm3D"]
