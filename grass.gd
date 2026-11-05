@@ -34,6 +34,11 @@ const GRASS_SHADER := preload("res://grass.gdshader")
 ## Seuil des clairières (0.3 = nombreuses, 0.6 = rares).
 @export_range(0.0, 1.0) var clearing_threshold: float = 0.42
 @export var variant_noise_frequency: float = 0.06
+@export_group("Bord des chemins")
+## Distance (m) depuis la terre sur laquelle l'herbe se raréfie.
+@export var path_edge_width: float = 2.5
+## Fraction de la densité juste au bord de la terre (0 = aucune herbe).
+@export_range(0.0, 1.0) var path_edge_density: float = 0.12
 @export_group("Touffes")
 @export var min_scale: float = 0.8
 @export var max_scale: float = 1.4
@@ -48,6 +53,9 @@ var _n_density := FastNoiseLite.new()
 var _n_clear := FastNoiseLite.new()
 var _n_variant := FastNoiseLite.new()
 var _n_color := FastNoiseLite.new()
+const DIST_CELL := 0.5
+const DIST_HALF := 208  # nombre de cellules par côté : la grille couvre -52..52 m
+var _dirt_dist := PackedFloat32Array()  # distance (m) à la terre la plus proche
 
 
 func _ready() -> void:
@@ -79,6 +87,7 @@ func _ready() -> void:
 		{"density": near_density, "chunk": 12.5, "range": near_view_distance, "mat": near_mat, "name": "Pres"},
 	]
 	var terrain_xform := terrain_mesh.global_transform
+	_build_dirt_distance(terrain_mesh.mesh, terrain_xform)
 	var mesh := terrain_mesh.mesh
 	for layer in layers:
 		var chunks := _scatter(mesh, terrain_xform, rng, layer["density"], layer["chunk"])
@@ -100,12 +109,68 @@ func _make_material(fade_start: float, fade_end: float) -> ShaderMaterial:
 	return m
 
 
-## Multiplicateur de densité (0..1) en un point : zones denses, clairsemées, clairières.
+## Carte de distance (m) à la terre : on marque les cellules contenant un sommet de
+## triangle « terre », puis on propage (2 passes) pour obtenir une distance approchée.
+func _build_dirt_distance(mesh: Mesh, xform: Transform3D) -> void:
+	var w := DIST_HALF
+	_dirt_dist.resize(w * w)
+	_dirt_dist.fill(99.0)
+	var found := false
+	for s in mesh.get_surface_count():
+		var mat := mesh.surface_get_material(s)
+		if mat == null or mat.resource_name != dirt_material_name:
+			continue
+		var verts: PackedVector3Array = mesh.surface_get_arrays(s)[Mesh.ARRAY_VERTEX]
+		for v in verts:
+			var p := xform * v
+			var cx := int(floor(p.x / DIST_CELL)) + w / 2
+			var cz := int(floor(p.z / DIST_CELL)) + w / 2
+			if cx >= 0 and cx < w and cz >= 0 and cz < w:
+				_dirt_dist[cz * w + cx] = 0.0
+				found = true
+	if not found:
+		return
+	var diag := DIST_CELL * 1.4142
+	for z in w:
+		for x in w:
+			var i := z * w + x
+			var d := _dirt_dist[i]
+			if x > 0: d = minf(d, _dirt_dist[i - 1] + DIST_CELL)
+			if z > 0:
+				d = minf(d, _dirt_dist[i - w] + DIST_CELL)
+				if x > 0: d = minf(d, _dirt_dist[i - w - 1] + diag)
+				if x < w - 1: d = minf(d, _dirt_dist[i - w + 1] + diag)
+			_dirt_dist[i] = d
+	for z in range(w - 1, -1, -1):
+		for x in range(w - 1, -1, -1):
+			var i := z * w + x
+			var d := _dirt_dist[i]
+			if x < w - 1: d = minf(d, _dirt_dist[i + 1] + DIST_CELL)
+			if z < w - 1:
+				d = minf(d, _dirt_dist[i + w] + DIST_CELL)
+				if x < w - 1: d = minf(d, _dirt_dist[i + w + 1] + diag)
+				if x > 0: d = minf(d, _dirt_dist[i + w - 1] + diag)
+			_dirt_dist[i] = d
+
+
+func _dist_to_dirt(x: float, z: float) -> float:
+	var w := DIST_HALF
+	var cx := clampi(int(floor(x / DIST_CELL)) + w / 2, 0, w - 1)
+	var cz := clampi(int(floor(z / DIST_CELL)) + w / 2, 0, w - 1)
+	return _dirt_dist[cz * w + cx]
+
+
+## Multiplicateur de densité (0..1) en un point : zones denses, clairsemées, clairières,
+## et raréfaction progressive au bord des chemins de terre.
 func _density_at(x: float, z: float) -> float:
 	var d := smoothstep(-0.3, 0.4, _n_density.get_noise_2d(x, z))
 	var m := lerpf(sparse_factor, 1.0, d)
 	var c := smoothstep(clearing_threshold - 0.1, clearing_threshold + 0.08, _n_clear.get_noise_2d(x, z))
-	return m * (1.0 - 0.96 * c)
+	var dd := _dist_to_dirt(x, z)
+	if dd <= 0.01:  # tout contre la terre : pas d'herbe (bord net)
+		return 0.0
+	var edge := smoothstep(0.15, path_edge_width, dd)
+	return m * (1.0 - 0.96 * c) * lerpf(path_edge_density, 1.0, edge)
 
 
 func _pick_variant(x: float, z: float, rng: RandomNumberGenerator) -> int:
