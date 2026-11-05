@@ -1,18 +1,8 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://player.gd" id="1_player"]
 [ext_resource type="PackedScene" path="res://assets/models/arbre_01.glb" id="3_tree"]
-[ext_resource type="Shader" path="res://floor.gdshader" id="2_floor"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_floor"]
-shader = ExtResource("2_floor")
-
-[sub_resource type="BoxMesh" id="BoxMesh_floor"]
-material = SubResource("ShaderMaterial_floor")
-size = Vector3(100, 1, 100)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
-size = Vector3(100, 1, 100)
+[ext_resource type="PackedScene" path="res://assets/models/terrain_01.glb" id="4_terrain"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_player"]
 
@@ -46,14 +36,7 @@ environment = SubResource("Environment_main")
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 10, 0)
 shadow_enabled = true
 
-[node name="Floor" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
-mesh = SubResource("BoxMesh_floor")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
-shape = SubResource("BoxShape3D_floor")
+[node name="Terrain" parent="." instance=ExtResource("4_terrain")]
 
 [node name="Player" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
@@ -81,7 +64,7 @@ margin = 0.2
 [node name="Camera3D" type="Camera3D" parent="Player/CameraPivot/SpringArm3D"]
 
 [node name="Arbre1" type="StaticBody3D" parent="."]
-transform = Transform3D(0.86603, 0, 0.5, 0, 1, 0, -0.5, 0, 0.86603, 6, 0, -4)
+transform = Transform3D(0.86603, 0, 0.5, 0, 1, 0, -0.5, 0, 0.86603, 6, -0.05, -4)
 
 [node name="arbre_01" parent="Arbre1" instance=ExtResource("3_tree")]
 
@@ -90,7 +73,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 shape = SubResource("CylinderShape3D_trunk")
 
 [node name="Arbre2" type="StaticBody3D" parent="."]
-transform = Transform3D(-0.34202, 0, 0.93969, 0, 1, 0, -0.93969, 0, -0.34202, -8, 0, 3)
+transform = Transform3D(-0.34202, 0, 0.93969, 0, 1, 0, -0.93969, 0, -0.34202, -8, -0.04, 3)
 
 [node name="arbre_01" parent="Arbre2" instance=ExtResource("3_tree")]
 
@@ -99,7 +82,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 shape = SubResource("CylinderShape3D_trunk")
 
 [node name="Arbre3" type="StaticBody3D" parent="."]
-transform = Transform3D(-0.93969, 0, -0.34202, 0, 1, 0, 0.34202, 0, -0.93969, 3, 0, 9)
+transform = Transform3D(-0.93969, 0, -0.34202, 0, 1, 0, 0.34202, 0, -0.93969, 3, 0.02, 9)
 
 [node name="arbre_01" parent="Arbre3" instance=ExtResource("3_tree")]
 
@@ -108,7 +91,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 shape = SubResource("CylinderShape3D_trunk")
 
 [node name="Arbre4" type="StaticBody3D" parent="."]
-transform = Transform3D(0.34202, 0, -0.93969, 0, 1, 0, 0.93969, 0, 0.34202, -5, 0, -10)
+transform = Transform3D(0.34202, 0, -0.93969, 0, 1, 0, 0.93969, 0, 0.34202, -5, 0.11, -10)
 
 [node name="arbre_01" parent="Arbre4" instance=ExtResource("3_tree")]
 
@@ -117,7 +100,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 shape = SubResource("CylinderShape3D_trunk")
 
 [node name="Arbre5" type="StaticBody3D" parent="."]
-transform = Transform3D(0.42262, 0, 0.90631, 0, 1, 0, -0.90631, 0, 0.42262, 12, 0, 6)
+transform = Transform3D(0.42262, 0, 0.90631, 0, 1, 0, -0.90631, 0, 0.42262, 12, 0.33, 6)
 
 [node name="arbre_01" parent="Arbre5" instance=ExtResource("3_tree")]
 
