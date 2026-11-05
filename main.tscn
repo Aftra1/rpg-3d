@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3]
+[gd_scene load_steps=24 format=3]
 
 [ext_resource type="Script" path="res://player.gd" id="1_player"]
 [ext_resource type="PackedScene" path="res://assets/models/arbre_01.glb" id="tree1"]
@@ -6,6 +6,9 @@
 [ext_resource type="PackedScene" path="res://assets/models/arbre_03.glb" id="tree3"]
 [ext_resource type="PackedScene" path="res://assets/models/terrain_01.glb" id="4_terrain"]
 [ext_resource type="Script" path="res://grass.gd" id="grass_script"]
+[ext_resource type="PackedScene" path="res://assets/models/roche_01.glb" id="rock1"]
+[ext_resource type="PackedScene" path="res://assets/models/roche_02.glb" id="rock2"]
+[ext_resource type="PackedScene" path="res://assets/models/roche_03.glb" id="rock3"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_player"]
 
@@ -13,6 +16,14 @@
 size = Vector3(0.3, 0.3, 0.3)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_rock2"]
+height = 0.85
+radius = 0.62
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_rock3"]
+height = 1.5
+radius = 1.3
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_trunk1"]
 height = 2.4
@@ -246,3 +257,186 @@ shape = SubResource("CylinderShape3D_trunk2")
 
 [node name="Grass" type="Node3D" parent="."]
 script = ExtResource("grass_script")
+
+[node name="Roche1" type="StaticBody3D" parent="."]
+transform = Transform3D(-0.92954, 0, -0.36873, 0, 1, 0, 0.36873, 0, -0.92954, 25.13, 0.006, -14.62)
+metadata/clearance = 1.68
+
+[node name="roche_03" parent="Roche1" instance=ExtResource("rock3")]
+transform = Transform3D(0.92, 0, 0, 0, 0.92, 0, 0, 0, 0.92, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Roche1"]
+transform = Transform3D(0.92, 0, 0, 0, 0.92, 0, 0, 0, 0.92, 0, 0.69, 0)
+shape = SubResource("CylinderShape3D_rock3")
+
+[node name="Roche2" type="StaticBody3D" parent="."]
+transform = Transform3D(0.5331, 0, -0.84605, 0, 1, 0, 0.84605, 0, 0.5331, 24.03, 0.477, -18.34)
+metadata/clearance = 1.05
+
+[node name="roche_02" parent="Roche2" instance=ExtResource("rock2")]
+transform = Transform3D(1.003, 0, 0, 0, 1.003, 0, 0, 0, 1.003, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Roche2"]
+transform = Transform3D(1.003, 0, 0, 0, 1.003, 0, 0, 0, 1.003, 0, 0.426, 0)
+shape = SubResource("CylinderShape3D_rock2")
+
+[node name="Roche3" type="Node3D" parent="."]
+transform = Transform3D(-0.97049, 0, 0.24115, 0, 1, 0, -0.24115, 0, -0.97049, 27.41, 0.623, -17.78)
+metadata/clearance = 0.65
+
+[node name="roche_01" parent="Roche3" instance=ExtResource("rock1")]
+transform = Transform3D(1.387, 0, 0, 0, 1.387, 0, 0, 0, 1.387, 0, 0, 0)
+
+[node name="Roche4" type="Node3D" parent="."]
+transform = Transform3D(0.78443, 0, 0.62021, 0, 1, 0, -0.62021, 0, 0.78443, 25.98, 0.693, -18.88)
+metadata/clearance = 0.49
+
+[node name="roche_01" parent="Roche4" instance=ExtResource("rock1")]
+transform = Transform3D(0.756, 0, 0, 0, 0.756, 0, 0, 0, 0.756, 0, 0, 0)
+
+[node name="Roche5" type="StaticBody3D" parent="."]
+transform = Transform3D(0.16785, 0, -0.98581, 0, 1, 0, 0.98581, 0, 0.16785, -32.33, -2.177, -2.0)
+metadata/clearance = 1.81
+
+[node name="roche_03" parent="Roche5" instance=ExtResource("rock3")]
+transform = Transform3D(1.006, 0, 0, 0, 1.006, 0, 0, 0, 1.006, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Roche5"]
+transform = Transform3D(1.006, 0, 0, 0, 1.006, 0, 0, 0, 1.006, 0, 0.754, 0)
+shape = SubResource("CylinderShape3D_rock3")
+
+[node name="Roche6" type="Node3D" parent="."]
+transform = Transform3D(0.93788, 0, 0.34696, 0, 1, 0, -0.34696, 0, 0.93788, -28.91, -1.294, 1.28)
+metadata/clearance = 0.57
+
+[node name="roche_01" parent="Roche6" instance=ExtResource("rock1")]
+transform = Transform3D(1.086, 0, 0, 0, 1.086, 0, 0, 0, 1.086, 0, 0, 0)
+
+[node name="Roche7" type="Node3D" parent="."]
+transform = Transform3D(0.94271, 0, -0.33361, 0, 1, 0, 0.33361, 0, 0.94271, -27.84, -1.608, -2.74)
+metadata/clearance = 0.62
+
+[node name="roche_01" parent="Roche7" instance=ExtResource("rock1")]
+transform = Transform3D(1.29, 0, 0, 0, 1.29, 0, 0, 0, 1.29, 0, 0, 0)
+
+[node name="Roche8" type="StaticBody3D" parent="."]
+transform = Transform3D(0.19257, 0, 0.98128, 0, 1, 0, -0.98128, 0, 0.19257, 0.05, -0.85, 29.49)
+metadata/clearance = 1.08
+
+[node name="roche_02" parent="Roche8" instance=ExtResource("rock2")]
+transform = Transform3D(1.036, 0, 0, 0, 1.036, 0, 0, 0, 1.036, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Roche8"]
+transform = Transform3D(1.036, 0, 0, 0, 1.036, 0, 0, 0, 1.036, 0, 0.44, 0)
+shape = SubResource("CylinderShape3D_rock2")
+
+[node name="Roche9" type="StaticBody3D" parent="."]
+transform = Transform3D(-0.74731, 0, 0.66447, 0, 1, 0, -0.66447, 0, -0.74731, -0.19, -0.586, 26.23)
+metadata/clearance = 1.06
+
+[node name="roche_02" parent="Roche9" instance=ExtResource("rock2")]
+transform = Transform3D(1.015, 0, 0, 0, 1.015, 0, 0, 0, 1.015, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Roche9"]
+transform = Transform3D(1.015, 0, 0, 0, 1.015, 0, 0, 0, 1.015, 0, 0.431, 0)
+shape = SubResource("CylinderShape3D_rock2")
+
+[node name="Roche10" type="Node3D" parent="."]
+transform = Transform3D(0.96943, 0, 0.24539, 0, 1, 0, -0.24539, 0, 0.96943, 2.98, -0.521, 30.15)
+metadata/clearance = 0.64
+
+[node name="roche_01" parent="Roche10" instance=ExtResource("rock1")]
+transform = Transform3D(1.363, 0, 0, 0, 1.363, 0, 0, 0, 1.363, 0, 0, 0)
+
+[node name="Roche11" type="Node3D" parent="."]
+transform = Transform3D(-0.37819, 0, -0.92573, 0, 1, 0, 0.92573, 0, -0.37819, 3.44, -0.418, 29.19)
+metadata/clearance = 0.54
+
+[node name="roche_01" parent="Roche11" instance=ExtResource("rock1")]
+transform = Transform3D(0.951, 0, 0, 0, 0.951, 0, 0, 0, 0.951, 0, 0, 0)
+
+[node name="Roche12" type="StaticBody3D" parent="."]
+transform = Transform3D(-0.98403, 0, 0.17801, 0, 1, 0, -0.17801, 0, -0.98403, -39.62, -1.072, 38.4)
+metadata/clearance = 1.6
+
+[node name="roche_03" parent="Roche12" instance=ExtResource("rock3")]
+transform = Transform3D(0.87, 0, 0, 0, 0.87, 0, 0, 0, 0.87, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Roche12"]
+transform = Transform3D(0.87, 0, 0, 0, 0.87, 0, 0, 0, 0.87, 0, 0.652, 0)
+shape = SubResource("CylinderShape3D_rock3")
+
+[node name="Roche13" type="StaticBody3D" parent="."]
+transform = Transform3D(0.83813, 0, 0.54547, 0, 1, 0, -0.54547, 0, 0.83813, -36.23, -0.364, 40.71)
+metadata/clearance = 1.12
+
+[node name="roche_02" parent="Roche13" instance=ExtResource("rock2")]
+transform = Transform3D(1.092, 0, 0, 0, 1.092, 0, 0, 0, 1.092, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Roche13"]
+transform = Transform3D(1.092, 0, 0, 0, 1.092, 0, 0, 0, 1.092, 0, 0.464, 0)
+shape = SubResource("CylinderShape3D_rock2")
+
+[node name="Roche14" type="Node3D" parent="."]
+transform = Transform3D(0.00478, 0, -0.99999, 0, 1, 0, 0.99999, 0, 0.00478, -35.55, -0.753, 36.0)
+metadata/clearance = 0.62
+
+[node name="roche_01" parent="Roche14" instance=ExtResource("rock1")]
+transform = Transform3D(1.29, 0, 0, 0, 1.29, 0, 0, 0, 1.29, 0, 0, 0)
+
+[node name="Roche15" type="StaticBody3D" parent="."]
+transform = Transform3D(0.9246, 0, 0.38093, 0, 1, 0, -0.38093, 0, 0.9246, 2.85, -1.85, -24.78)
+metadata/clearance = 1.09
+
+[node name="roche_02" parent="Roche15" instance=ExtResource("rock2")]
+transform = Transform3D(1.051, 0, 0, 0, 1.051, 0, 0, 0, 1.051, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Roche15"]
+transform = Transform3D(1.051, 0, 0, 0, 1.051, 0, 0, 0, 1.051, 0, 0.447, 0)
+shape = SubResource("CylinderShape3D_rock2")
+
+[node name="Roche16" type="Node3D" parent="."]
+transform = Transform3D(0.98593, 0, 0.16714, 0, 1, 0, -0.16714, 0, 0.98593, 3.07, -1.515, -28.03)
+metadata/clearance = 0.56
+
+[node name="roche_01" parent="Roche16" instance=ExtResource("rock1")]
+transform = Transform3D(1.037, 0, 0, 0, 1.037, 0, 0, 0, 1.037, 0, 0, 0)
+
+[node name="Roche17" type="Node3D" parent="."]
+transform = Transform3D(0.75649, 0, 0.654, 0, 1, 0, -0.654, 0, 0.75649, 5.77, -1.064, -22.98)
+metadata/clearance = 0.48
+
+[node name="roche_01" parent="Roche17" instance=ExtResource("rock1")]
+transform = Transform3D(0.706, 0, 0, 0, 0.706, 0, 0, 0, 0.706, 0, 0, 0)
+
+[node name="Roche18" type="Node3D" parent="."]
+transform = Transform3D(0.65836, 0, 0.7527, 0, 1, 0, -0.7527, 0, 0.65836, -0.49, -1.521, -24.27)
+metadata/clearance = 0.54
+
+[node name="roche_01" parent="Roche18" instance=ExtResource("rock1")]
+transform = Transform3D(0.973, 0, 0, 0, 0.973, 0, 0, 0, 0.973, 0, 0, 0)
+
+[node name="Roche19" type="StaticBody3D" parent="."]
+transform = Transform3D(0.13734, 0, -0.99052, 0, 1, 0, 0.99052, 0, 0.13734, -25.9, 1.172, -35.2)
+metadata/clearance = 1.01
+
+[node name="roche_02" parent="Roche19" instance=ExtResource("rock2")]
+transform = Transform3D(0.942, 0, 0, 0, 0.942, 0, 0, 0, 0.942, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Roche19"]
+transform = Transform3D(0.942, 0, 0, 0, 0.942, 0, 0, 0, 0.942, 0, 0.4, 0)
+shape = SubResource("CylinderShape3D_rock2")
+
+[node name="Roche20" type="Node3D" parent="."]
+transform = Transform3D(0.9658, 0, -0.2593, 0, 1, 0, 0.2593, 0, 0.9658, -24.6, 1.168, -33.03)
+metadata/clearance = 0.49
+
+[node name="roche_01" parent="Roche20" instance=ExtResource("rock1")]
+transform = Transform3D(0.76, 0, 0, 0, 0.76, 0, 0, 0, 0.76, 0, 0, 0)
+
+[node name="Roche21" type="Node3D" parent="."]
+transform = Transform3D(0.99328, 0, -0.1157, 0, 1, 0, 0.1157, 0, 0.99328, -28.78, 1.897, -35.23)
+metadata/clearance = 0.52
+
+[node name="roche_01" parent="Roche21" instance=ExtResource("rock1")]
+transform = Transform3D(0.863, 0, 0, 0, 0.863, 0, 0, 0, 0.863, 0, 0, 0)
